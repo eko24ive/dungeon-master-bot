@@ -1,0 +1,10 @@
+{
+    "rules": {
+        "max-len": "warn",
+        "linebreak-style":"warn",
+        "no-underscore-dangle":"warn",
+        "no-param-reassign": [2, { "props": false }],
+        "no-useless-escape":"warn"
+    },
+    "extends": "airbnb"
+}

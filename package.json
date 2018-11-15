@@ -1,0 +1,49 @@
+{
+  "name": "wasteland-charisma-calculator-bot",
+  "version": "0.7.13",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^2.6.0",
+    "chart.js": "^2.7.2",
+    "chartjs-node": "^1.7.1",
+    "commander": "^2.15.1",
+    "cool-ascii-faces": "^1.3.4",
+    "dotenv": "^5.0.1",
+    "moment": "^2.22.1",
+    "moment-timezone": "^0.5.17",
+    "mongoose": "^5.0.17",
+    "numeral": "^2.0.6",
+    "object-deep-search": "0.0.7",
+    "telebot": "^1.2.6",
+    "underscore": "^1.9.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.1",
+    "jsonfile": "^5.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node ./index.js -D",
+    "prod": "node ./index.js -P",
+    "deploy:staging": "git checkout master && git pull && git push heroku-staging master --force",
+    "deploy:production": "git checkout master && git pull && git push heroku master",
+    "maintainance:staging": "git checkout maintainance && git pull && git push heroku-staging master --force",
+    "maintainance:production": "git checkout maintainance && git pull && git push heroku master --force"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eko24ive/wasteland-charisma-calculator-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eko24ive/wasteland-charisma-calculator-bot/issues"
+  },
+  "homepage": "https://github.com/eko24ive/wasteland-charisma-calculator-bot#readme"
+}
