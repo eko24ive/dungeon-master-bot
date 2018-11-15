@@ -214,37 +214,6 @@ bot.on('forward', (msg) => {
   return null;
 });
 
-bot.on('/seed', (msg) => {
-  if (msg.from.id !== 99120720) {
-    return;
-  }
-
-  const dungeons = [
-    'oldMine',
-    'openVault',
-    'betCave',
-    'hroshgarHigh',
-    'scientificComplex',
-    'templeOfKnowledge',
-    'blackMesa',
-    'moltenСore',
-  ];
-
-  async.forEach(dungeons, (dungeon, next) => {
-    const newDungeon = new Dungeon({
-      name: dungeon,
-    });
-
-    newDungeon.save().then(() => {
-      next();
-    });
-  }, () => {
-    msg.reply.text('Database seeded', {
-      asReply: true,
-    });
-  });
-});
-
 bot.on('/faq', msg => msg.reply.text(`
 1. Если ты хочешь скинуть несколько форвардов - рекомендую воспользоваться режимом "Отправить Пачку". В противном случае бот временно тебя "замьютит" на две-три минуты.
 
