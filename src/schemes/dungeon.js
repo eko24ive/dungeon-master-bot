@@ -9,6 +9,10 @@ const beastScheme = new Schema({
     loot: String,
     time: Number,
     stamp: String,
+    user: {
+      username: String,
+      id: Number,
+    },
   }],
 }, {
   timestamps: {
