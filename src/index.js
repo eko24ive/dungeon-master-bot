@@ -30,7 +30,13 @@ const setState = (id, state) => {
   sessions[id].state = state;
 };
 
-const getState = id => sessions[id].state || null;
+const getState = (id) => {
+  if (sessions[id] !== undefined) {
+    return sessions[id].state;
+  }
+
+  return null;
+};
 
 const getSessionData = id => sessions[id].data || null;
 
@@ -39,25 +45,54 @@ const pushSessionData = (id, data) => {
 };
 
 
-const updateDungeons = dungeons => new Promise((resolve) => {
+const updateDungeons = (msg, dungeons) => {
+  let dupes = 0;
+
   async.forEach(dungeons, (iDungeon, next) => {
     Dungeon.findOne({ name: iDungeon.name }).then((dungeon) => {
-      const uniqueForwards = dungeon.forwards.filter(({ stamp }) => stamp !== iDungeon.stamp);
+      const isForwardDupe = dungeon.toJSON().forwards.some(({ stamp }) => stamp === iDungeon.stamp);
 
-      uniqueForwards.forEach((forward) => {
-        dungeon.forwards.push(forward);
-      });
+      if (!isForwardDupe) {
+        dungeon.forwards.push(iDungeon);
 
-      dungeon.markModified('forwards');
+        dungeon.markModified('forwards');
+      } else {
+        dupes += 1;
+      }
 
       dungeon.save(() => {
         next();
       });
     });
   }, () => {
-    resolve();
+    const allDupes = dupes === dungeons.length;
+    const someDupes = dupes > 0;
+    const someDupesReply = someDupes ? '\nБыли замечены дубликаты.' : '';
+    if (allDupes) {
+      msg.reply.text('Я не увидел новых форвардов', {
+        replyMarkup: bot.keyboard([
+          ['Отправить пачку'],
+        ], {
+          resize: true,
+          once: true,
+          remove: true,
+        }),
+      });
+    } else {
+      msg.reply.text(`Я успешно обработал информацию и сохранил ёё в базу${someDupesReply}`, {
+        replyMarkup: bot.keyboard([
+          ['Отправить пачку'],
+        ], {
+          resize: true,
+          once: true,
+          remove: true,
+        }),
+      });
+    }
+
+    createSession(msg.from.id);
   });
-});
+};
 
 bot.on(['/start', '/help'], (msg) => {
   createSession(msg.from.id);
@@ -110,15 +145,7 @@ bot.on('text', (msg) => {
       const sessionData = getSessionData(msg.from.id);
 
       if (sessionData !== null) {
-        return updateDungeons(sessionData).then((result) => {
-          if (result.ok) {
-            msg.reply.text('Всё супер - я обработал информацию и сохранил её в базу');
-          } else {
-            msg.reply.text('Упс, что-то пошло не так');
-          }
-
-          createSession(msg.from.id);
-        });
+        return updateDungeons(msg, sessionData);
       }
 
       return msg.reply.text('Сорян, похоже меня перезагрузил какой-то пидор');
@@ -159,6 +186,7 @@ bot.on('forward', (msg) => {
         name: dungeonName,
         ...dungeonData,
         stamp: `${msg.from.id}+${msg.forward_date}`,
+        time: msg.forward_date,
         user: {
           username: msg.from.username,
           id: msg.from.id,
@@ -167,38 +195,58 @@ bot.on('forward', (msg) => {
 
       if (state !== null) {
         if (state === 'WAIT_FOR_FORWARDS') {
-          pushSessionData(dungeon);
+          pushSessionData(msg.from.id, dungeon);
         } else {
-          updateDungeons([
+          updateDungeons(msg, [
             dungeon,
-          ]).then((result) => {
-            if (result.ok) {
-              msg.reply.text('Я успешно обработал твой форвард и сохранил его в базу');
-            } else {
-              msg.reply.text('Упс, что-то пошло не так');
-            }
-
-            createSession(msg.from.id);
-          });
+          ]);
         }
       } else {
-        updateDungeons([
+        updateDungeons(msg, [
           dungeon,
-        ]).then((result) => {
-          if (result.ok) {
-            msg.reply.text('Я успешно обработал твой форвард и сохранил его в базу');
-          } else {
-            msg.reply.text('Упс, что-то пошло не так');
-          }
-
-          createSession(msg.from.id);
-        });
+        ]);
       }
     }
-    return msg.reply.text(detectDungeon(msg.text));
+  } else {
+    return msg.reply.text('Прости, но этот форвард меня не интересует :с');
   }
 
-  return msg.reply.text('Прости, но этот форвард меня не интересует :с');
+  return null;
 });
+
+bot.on('/seed', (msg) => {
+  if (msg.from.id !== 99120720) {
+    return;
+  }
+
+  const dungeons = [
+    'oldMine',
+    'openVault',
+    'betCave',
+    'hroshgarHigh',
+    'scientificComplex',
+    'templeOfKnowledge',
+    'blackMesa',
+    'moltenСore',
+  ];
+
+  async.forEach(dungeons, (dungeon, next) => {
+    const newDungeon = new Dungeon({
+      name: dungeon,
+    });
+
+    newDungeon.save().then(() => {
+      next();
+    });
+  }, () => {
+    msg.reply.text('Database seeded', {
+      asReply: true,
+    });
+  });
+});
+
+bot.on('/faq', msg => msg.reply.text(`
+1. Если ты хочешь скинуть несколько форвардов - рекомендую воспользоваться режимом "Отправить Пачку". В противном случае бот временно тебя "замьютит" на две-три минуты.
+`));
 
 bot.start();
