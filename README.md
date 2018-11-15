@@ -26,4 +26,5 @@ MONGODB_URI=<YOUR_MONGO_DB_ADDRESS>
 It is possible to debug this solution using VSCode debug tools via `Dev` configuration.
 
 ### Contribution
-Feel free to submit a PR or create issue!
+Feel free to submit a PR, ensure that your code fullfils eslint rules.
+Also, feel free to create an issue as well!
