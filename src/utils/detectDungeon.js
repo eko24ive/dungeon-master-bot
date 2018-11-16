@@ -38,16 +38,16 @@ const detectDungeon = (text) => {
   if (moltenСoreRegExp.test(text)) {
     return 'moltenСore';
   }
-  if (haloCaveRegExp.text(text)) {
+  if (haloCaveRegExp.test(text)) {
     return 'haloCave';
   }
-  if (sewerPipeRegExp.text(text)) {
+  if (sewerPipeRegExp.test(text)) {
     return 'sewerPipe';
   }
-  if (utkinPassRegExp.text(text)) {
+  if (utkinPassRegExp.test(text)) {
     return 'utkinPass';
   }
-  if (ruinsOfHexagonRegExp.text(text)) {
+  if (ruinsOfHexagonRegExp.test(text)) {
     return 'ruinsOfHexagon';
   }
 

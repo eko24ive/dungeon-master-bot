@@ -11,11 +11,13 @@ const sewerPipeRegExp = /Как оказалось, даже в канализа
 const utkinPassRegExp = /Ты дошел до каких-то палаток\./;
 const ruinsOfHexagonRegExp = /Эти коридоры вообще заканчиваются\?!/;
 
-const dungeonLoot = /Найдено: 🕳(\d*) и 📦(\d*)\nНайдено:.+\n(.*)\n(.*)/;
+const dungeonLootWithItemRegExp = /Найдено: 🕳(\d*) и 📦(\d*)\nНайдено:.+\n(.*)\n(.*)/;
+const dungeonLootWithoutItemRegExp = /Найдено: 🕳(\d*) и 📦(\d*)\nНайдено:.+\n(.*)/;
 
 const dungeon = {
-  contains: [
-    dungeonLoot,
+  conditional: [
+    dungeonLootWithItemRegExp,
+    dungeonLootWithoutItemRegExp,
   ],
   either: [
     oldMineRegExp,
@@ -48,5 +50,6 @@ module.exports = {
   utkinPassRegExp,
   ruinsOfHexagonRegExp,
 
-  dungeonLoot,
+  dungeonLootWithItemRegExp,
+  dungeonLootWithoutItemRegExp,
 };
