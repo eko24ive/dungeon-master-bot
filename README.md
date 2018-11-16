@@ -20,7 +20,8 @@ MONGODB_URI=<YOUR_MONGO_DB_ADDRESS>
 4. Replace `<YOUR_BOT_TOKEN>` with just generated token
 5. Replace `<YOUR_MONGO_DB_ADDRESS>` with your MongoDB address (probably its mongodb://localhost/dmb)
 
-6. Run the project using `node ./src/index` command
+6. Seed the database using `npm run seed` command
+7. Run the project using `npm start` command
 
 ### Debugging
 It is possible to debug this solution using VSCode debug tools via `Dev` configuration.
