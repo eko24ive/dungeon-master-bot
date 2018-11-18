@@ -15,10 +15,12 @@ MongoDB should be installed at your machine
 ```
 BOT_TOKEN=<YOUR_BOT_TOKEN>
 MONGODB_URI=<YOUR_MONGO_DB_ADDRESS>
+MONGODB_RUNNER_URI=<MONGO_DB_ADDRESS_FOR_RUNNERS>
 ```
 3. Visit [@botfater](https://t.me/botfather/) and generate yourself a bot token
 4. Replace `<YOUR_BOT_TOKEN>` with just generated token
 5. Replace `<YOUR_MONGO_DB_ADDRESS>` with your MongoDB address (probably its mongodb://localhost/dmb)
+   `<MONGO_DB_ADDRESS_FOR_RUNNERS>` is used for runners in `/src/runners`
 
 6. Seed the database using `npm run seed` command
 7. Run the project using `npm start` command
