@@ -11,8 +11,8 @@ const sewerPipeRegExp = /Как оказалось, даже в канализа
 const utkinPassRegExp = /Ты дошел до каких-то палаток\./;
 const ruinsOfHexagonRegExp = /Эти коридоры вообще заканчиваются\?!/;
 
-const dungeonLootWithItemRegExp = /Найдено: 🕳(\d*) и 📦(\d*)\nНайдено:.+\n(.*)\n(.*)/;
-const dungeonLootWithoutItemRegExp = /Найдено: 🕳(\d*) и 📦(\d*)\nНайдено:.+\n(.*)/;
+const dungeonLootWithItemRegExp = /Получено: 🕳(\d*) и 📦(\d*)\nНайдено:.+\n(.*)\n(.*)/;
+const dungeonLootWithoutItemRegExp = /Получено: 🕳(\d*) и 📦(\d*)\nНайдено:.+\n.*\nНа этот раз.+\n(.+)/;
 
 const dungeon = {
   conditional: [

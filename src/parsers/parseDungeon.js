@@ -3,17 +3,10 @@ const {
   dungeonLootWithoutItemRegExp,
 } = require('../regexp/regexp');
 
-const parseDungeon = (text) => {
-  if (dungeonLootWithItemRegExp.test(text)) {
-    const [, caps, materials, item, loot] = dungeonLootWithItemRegExp.exec(text);
+const escapeItem = item => item.replace(' 👎', '');
 
-    return {
-      caps,
-      materials,
-      item,
-      loot,
-    };
-  } if (dungeonLootWithoutItemRegExp.test(text)) {
+const parseDungeon = (text) => {
+  if (dungeonLootWithoutItemRegExp.test(text)) {
     const [, caps, materials, loot] = dungeonLootWithoutItemRegExp.exec(text);
 
     return {
@@ -22,8 +15,16 @@ const parseDungeon = (text) => {
       item: null,
       loot,
     };
-  }
+  } if (dungeonLootWithItemRegExp.test(text)) {
+    const [, caps, materials, item, loot] = dungeonLootWithItemRegExp.exec(text);
 
+    return {
+      caps,
+      materials,
+      item: escapeItem(item),
+      loot,
+    };
+  }
   return null;
 };
 
