@@ -235,11 +235,10 @@ bot.on('forward', (msg) => {
         ]);
       }
     }
-  } else {
-    return msg.reply.text('Прости, но этот форвард меня не интересует :с');
+    return null;
   }
 
-  return null;
+  return msg.reply.text('Прости, но этот форвард меня не интересует :с');
 });
 
 
